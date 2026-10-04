@@ -73,7 +73,6 @@
             transform: scale(1.05);
         }
 
-        /* غطاء الظرف من فوق */
         .envelope-flap {
             position: absolute;
             top: 0;
@@ -167,6 +166,7 @@
             font-size: 13px;
             margin-top: 12px;
             display: none;
+            font-weight: bold;
         }
 
         /* المحتوى الرئيسي */
@@ -335,12 +335,12 @@
                 <div class="envelope-title">افتحي الظرف يا نوران 💌</div>
             </div>
 
-            <!-- خانة كلمة السر (تظهر بعد فتح الظرف) -->
+            <!-- خانة كلمة السر (بدون أي ذكر لـ Nona برا) -->
             <div class="pass-container" id="passContainer">
-                <h3 style="color: #ff4081; margin-bottom: 15px; font-size: 18px;">اكتبي كلمة السر (Nona)</h3>
+                <h3 style="color: #ff4081; margin-bottom: 15px; font-size: 18px;">اكتبي كلمة السر</h3>
                 <input type="password" id="pass-input" placeholder="كلمة السر...">
                 <button onclick="checkPassword()">دوسي هنا ياابت 😂</button>
-                <div id="error-msg" class="error-msg">كلمة السر خطأ، جربي تاني!</div>
+                <div id="error-msg" class="error-msg">كلمة السر غلط يا نوران 😂😂</div>
             </div>
         </div>
     </div>
@@ -418,7 +418,7 @@
             }, 500);
         }
 
-        // التحقق من كلمة السر Nona
+        // التحقق من كلمة السر Nona خفياً وإظهار رسالة الخطأ المطلوبة
         function checkPassword() {
             const pass = document.getElementById('pass-input').value.trim();
             const errorMsg = document.getElementById('error-msg');
