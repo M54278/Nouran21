@@ -33,55 +33,103 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
         }
 
-        /* واجهة الظرف الفخمة والشيك */
+        /* واجهة الظرف الحقيقي الفخم */
         #login-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%);
+            background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             padding: 20px;
         }
-        .envelope-card {
-            background: linear-gradient(145deg, #1e1e1e, #161616);
-            padding: 45px 30px;
-            border-radius: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 20px rgba(255, 64, 129, 0.1);
-            width: 100%;
-            max-width: 380px;
-            border: 1px solid #333;
-            position: relative;
-        }
-        .envelope-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .envelope-card h2 {
-            color: #ff4081;
-            margin-bottom: 25px;
-            font-size: 21px;
-            font-weight: bold;
+        
+        .envelope-wrapper {
             cursor: pointer;
+            text-align: center;
+            transition: 0.5s;
         }
+
+        .real-envelope {
+            width: 280px;
+            height: 180px;
+            background: #222;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            border: 2px solid #ff4081;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.4s;
+        }
+
+        .real-envelope:hover {
+            transform: scale(1.05);
+        }
+
+        /* غطاء الظرف من فوق */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #2d2d2d;
+            transform-origin: top;
+            transition: 0.6s;
+        }
+
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 10;
+        }
+
+        .envelope-heart {
+            font-size: 40px;
+            z-index: 5;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .envelope-title {
+            color: #ff4081;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* خانة إدخال كلمة السر بعد فتح الظرف */
         .pass-container {
             display: none;
-            animation: fadeIn 0.5s ease;
+            background: #1e1e1e;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid #333;
+            animation: fadeIn 0.6s ease;
+            margin: 0 auto;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .envelope-card input {
+
+        .pass-container input {
             width: 100%;
             padding: 14px 18px;
             border: 2px solid #444;
@@ -94,11 +142,11 @@
             color: #fff;
             transition: 0.3s;
         }
-        .envelope-card input:focus {
+        .pass-container input:focus {
             border-color: #ff4081;
             box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
         }
-        .envelope-card button {
+        .pass-container button {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, #ff4081, #f50057);
@@ -111,7 +159,7 @@
             box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
             transition: 0.3s;
         }
-        .envelope-card button:hover {
+        .pass-container button:hover {
             transform: scale(1.02);
         }
         .error-msg {
@@ -275,13 +323,22 @@
 </head>
 <body>
 
-    <!-- واجهة الظرف الفخمة -->
+    <!-- واجهة الظرف الحقيقي -->
     <div id="login-screen">
-        <div class="envelope-card">
-            <div class="envelope-icon">✉️</div>
-            <h2 onclick="revealPass()">دوسي هنا يا نوران ♥</h2>
+        <div style="width: 100%; max-width: 350px;">
+            <!-- شكل الظرف الحقيقي -->
+            <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+                <div class="real-envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-heart">❤️</div>
+                </div>
+                <div class="envelope-title">افتحي الظرف يا نوران 💌</div>
+            </div>
+
+            <!-- خانة كلمة السر (تظهر بعد فتح الظرف) -->
             <div class="pass-container" id="passContainer">
-                <input type="password" id="pass-input" placeholder="اكتبي كلمة السر (Nona)">
+                <h3 style="color: #ff4081; margin-bottom: 15px; font-size: 18px;">اكتبي كلمة السر (Nona)</h3>
+                <input type="password" id="pass-input" placeholder="كلمة السر...">
                 <button onclick="checkPassword()">دوسي هنا ياابت 😂</button>
                 <div id="error-msg" class="error-msg">كلمة السر خطأ، جربي تاني!</div>
             </div>
@@ -313,7 +370,7 @@
         </div>
         <audio id="bgMusic" src="ssstik.io_1790955861239.mp3" preload="auto" loop></audio>
 
-        <!-- الصور والتواريخ تحتها مباشرة (بدون كلام قديم) -->
+        <!-- الصور والتواريخ تحتها مباشرة -->
         <div class="images-section">
             <div class="img-card">
                 <img src="IMG-20261004-WA0016.jpg" alt="صورة 1">
@@ -351,9 +408,14 @@
     </div>
 
     <script>
-        // إظهار خانة كلمة السر عند الضغط على الظرف
-        function revealPass() {
-            document.getElementById('passContainer').style.display = 'block';
+        // فتح الظرف الحقيقي وإظهار خانة كلمة السر
+        function openEnvelope() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            wrapper.classList.add('open');
+            setTimeout(() => {
+                wrapper.style.display = 'none';
+                document.getElementById('passContainer').style.display = 'block';
+            }, 500);
         }
 
         // التحقق من كلمة السر Nona
