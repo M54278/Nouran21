@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Moments - جميله سبتمبر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            text-align: center;
+        }
+        /* القلوب المتساقطة في الخلفية */
+        .heart-fall {
+            position: fixed;
+            top: -10vh;
+            z-index: 999;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+        }
+
+        /* واجهة الظرف الحقيقي الفخم */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .envelope-wrapper {
+            cursor: pointer;
+            text-align: center;
+            transition: 0.5s;
+        }
+
+        .real-envelope {
+            width: 280px;
+            height: 180px;
+            background: #222;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            border: 2px solid #ff4081;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.4s;
+        }
+
+        .real-envelope:hover {
+            transform: scale(1.05);
+        }
+
+        /* غطاء الظرف من فوق */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #2d2d2d;
+            transform-origin: top;
+            transition: 0.6s;
+        }
+
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 10;
+        }
+
+        .envelope-heart {
+            font-size: 40px;
+            z-index: 5;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .envelope-title {
+            color: #ff4081;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* خانة إدخال كلمة السر بعد فتح الظرف */
+        .pass-container {
+            display: none;
+            background: #1e1e1e;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid #333;
+            animation: fadeIn 0.6s ease;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pass-container input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #444;
+            border-radius: 30px;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            background: #252525;
+            color: #fff;
+            transition: 0.3s;
+        }
+        .pass-container input:focus {
+            border-color: #ff4081;
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+        }
+        .pass-container button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff4081, #f50057);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            transition: 0.3s;
+        }
+        .pass-container button:hover {
+            transform: scale(1.02);
+        }
+        .error-msg {
+            color: #ff5252;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* المحتوى الرئيسي */
+        #main-content {
+            display: none;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header-title {
+            font-size: 24px;
+            color: #ff4081;
+            margin: 5px 0 15px 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* العداد التنازلي والنصوص حوله */
+        .countdown-label-top {
+            font-size: 15px;
+            color: #ccc;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .time-box {
+            background: #1e1e1e;
+            padding: 12px;
+            border-radius: 12px;
+            min-width: 65px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+        .time-box span {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff4081;
+        }
+        .time-box label {
+            font-size: 11px;
+            color: #aaa;
+        }
+        .countdown-label-bottom {
+            font-size: 15px;
+            color: #ff4081;
+            font-weight: bold;
+            margin: 10px 0 20px 0;
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px dashed #ff4081;
+        }
+
+        /* مشغل الأغاني الدوار الأنيق */
+        .music-player {
+            background: #1e1e1e;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin: 15px 0 30px 0;
+            border: 1px solid #333;
+        }
+        .album-art {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: rotateAlbum 6s linear infinite;
+            border: 2px solid #ff4081;
+        }
+        @keyframes rotateAlbum {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .play-btn {
+            background: #ff4081;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* صور الذكريات والتواريخ تحتها مباشرة */
+        .images-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .img-card {
+            background: #1e1e1e;
+            padding: 12px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            border: 1px solid #333;
+        }
+        .img-card img {
+            width: 100%;
+            border-radius: 10px;
+            max-height: 480px;
+            object-fit: cover;
+        }
+        .img-date {
+            margin-top: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #ff4081;
+            letter-spacing: 0.5px;
+        }
+
+        /* قسم الواتساب والتواصل */
+        .whatsapp-section {
+            margin: 35px 0 20px;
+        }
+        .whatsapp-hint {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ff4081;
+            margin-bottom: 8px;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25d366;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: 0.3s;
+        }
+        .whatsapp-btn:hover {
+            background: #20ba5a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- واجهة الظرف الحقيقي -->
+    <div id="login-screen">
+        <div style="width: 100%; max-width: 350px;">
+            <!-- شكل الظرف الحقيقي -->
+            <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+                <div class="real-envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-heart">❤️</div>
+                </div>
+                <div class="envelope-title">افتحي الظرف يا نوران 💌</div>
+            </div>
+
+            <!-- خانة كلمة السر (تظهر بعد فتح الظرف) -->
+            <div class="pass-container" id="passContainer">
+                <h3 style="color: #ff4081; margin-bottom: 15px; font-size: 18px;">اكتبي كلمة السر (Nona)</h3>
+                <input type="password" id="pass-input" placeholder="كلمة السر...">
+                <button onclick="checkPassword()">دوسي هنا ياابت 😂</button>
+                <div id="error-msg" class="error-msg">كلمة السر خطأ، جربي تاني!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div id="main-content">
+        <div class="header-title">جمــــيـــله ســــبـــتـــمـــبـــر ♥🎀</div>
+
+        <!-- جملة باقي فوق العداد مباشرة -->
+        <div class="countdown-label-top">باااقي لغيد ميلادي</div>
+
+        <div class="countdown-container">
+            <div class="time-box"><span id="days">00</span><label>يوم</label></div>
+            <div class="time-box"><span id="hours">00</span><label>ساعة</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>دقيقة</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>ثانية</label></div>
+        </div>
+
+        <!-- جملة الاحتفال تحت العداد -->
+        <div class="countdown-label-bottom">احتفاال بعيد ميلادي الجااي 🥳✨</div>
+
+        <!-- مشغل الأغنية الدوار الأنيق -->
+        <div class="music-player">
+            <button class="play-btn" id="playBtn" onclick="togglePlay()"><i class="fa-solid fa-pause" id="playIcon"></i></button>
+            <span style="font-weight:600; font-size:13px; color:#ff4081;">موسيقى الذكريات الخاصة بك 🤍</span>
+            <img src="IMG-20261004-WA0016.jpg" class="album-art" alt="Album Art">
+        </div>
+        <audio id="bgMusic" src="ssstik.io_1790955861239.mp3" preload="auto" loop></audio>
+
+        <!-- الصور والتواريخ تحتها مباشرة -->
+        <div class="images-section">
+            <div class="img-card">
+                <img src="IMG-20261004-WA0016.jpg" alt="صورة 1">
+                <div class="img-date">📆 1/9/2009 🎀</div>
+            </div>
+            
+            <div class="img-card">
+                <img src="IMG-20261003-WA0019.jpg" alt="صورة 2">
+                <div class="img-date">📆 1/9/2027 🤍</div>
+            </div>
+
+            <div class="img-card">
+                <img src="IMG-20261004-WA0014.jpg" alt="صورة 3">
+                <div class="img-date">📆 1/9/2027 ✨</div>
+            </div>
+
+            <div class="img-card">
+                <img src="IMG-20261004-WA0015.jpg" alt="صورة 4">
+                <div class="img-date">📆 1/9/2027 🌹</div>
+            </div>
+
+            <div class="img-card">
+                <img src="IMG-20261004-WA0013.jpg" alt="صورة 5">
+                <div class="img-date">📆 1/9/2027 🌟</div>
+            </div>
+        </div>
+
+        <!-- قسم الواتساب -->
+        <div class="whatsapp-section">
+            <div class="whatsapp-hint">التصميم والتواصل 👇🏻👇🏻</div>
+            <a href="https://api.whatsapp.com/send?phone=+201556446391&text=ازيك يا حُسام، شفت التصميم وعايز اتواصل معاك" class="whatsapp-btn" target="_blank">
+                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> ادخل كلمني 💬
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // فتح الظرف الحقيقي وإظهار خانة كلمة السر
+        function openEnvelope() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            wrapper.classList.add('open');
+            setTimeout(() => {
+                wrapper.style.display = 'none';
+                document.getElementById('passContainer').style.display = 'block';
+            }, 500);
+        }
+
+        // التحقق من كلمة السر Nona
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            
+            if(pass.toLowerCase() === "nona") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                
+                // تشغيل الأغنية تلقائياً
+                const music = document.getElementById('bgMusic');
+                music.play().catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+
+                startHeartRain(); 
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // تشغيل وإيقاف الأغنية يدوياً
+        const music = document.getElementById('bgMusic');
+        const playIcon = document.getElementById('playIcon');
+        function togglePlay() {
+            if(music.paused) {
+                music.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                music.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        // العداد التنازلي ليوم 1 سبتمبر 2027
+        const targetDate = new Date('September 1, 2027 00:00:00').getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+            if(gap < 0) return;
+
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            const d = Math.floor(gap / day);
+            const h = Math.floor((gap % day) / hour);
+            const m = Math.floor((gap % hour) / minute);
+            const s = Math.floor((gap % minute) / second);
+
+            document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+        }
+        setInterval(updateCountdown, 1000);
+
+        // تساقط القلوب في الخلفية
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-fall');
+            const hearts = ['🖤', '❤️', '🤍', '✨', '🌹'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 16 + 14) + 'px';
+            heart.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 400);
+
+        function startHeartRain() {
+            for(let i=0; i<15; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 150);
+            }
+        }
+    </script>
+</body>
+</html>
