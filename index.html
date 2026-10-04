@@ -19,7 +19,7 @@
             overflow-x: hidden;
             text-align: center;
         }
-        /* القلوب المتساقطة في الخلفية (دارك مود) */
+        /* القلوب المتساقطة في الخلفية */
         .heart-fall {
             position: fixed;
             top: -10vh;
@@ -33,40 +33,43 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
         }
 
-        /* واجهة الظرف الداكنة */
+        /* واجهة الظرف الفخمة والشيك */
         #login-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #1f1f1f, #121212);
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             padding: 20px;
         }
-        .envelope {
-            background: #1e1e1e;
-            padding: 40px 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        .envelope-card {
+            background: linear-gradient(145deg, #1e1e1e, #161616);
+            padding: 45px 30px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 20px rgba(255, 64, 129, 0.1);
             width: 100%;
             max-width: 380px;
-            border: 2px solid #333;
+            border: 1px solid #333;
             position: relative;
         }
-        .envelope::before {
-            content: '✉️';
-            font-size: 40px;
-            display: block;
+        .envelope-icon {
+            font-size: 50px;
             margin-bottom: 15px;
+            animation: bounce 2s infinite;
         }
-        .envelope h2 {
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .envelope-card h2 {
             color: #ff4081;
             margin-bottom: 25px;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -78,71 +81,73 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .envelope input {
+        .envelope-card input {
             width: 100%;
-            padding: 14px 15px;
+            padding: 14px 18px;
             border: 2px solid #444;
             border-radius: 30px;
             outline: none;
             font-size: 16px;
             text-align: center;
             margin-bottom: 15px;
-            background: #2a2a2a;
+            background: #252525;
             color: #fff;
+            transition: 0.3s;
         }
-        .envelope input:focus {
+        .envelope-card input:focus {
             border-color: #ff4081;
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
         }
-        .envelope button {
+        .envelope-card button {
             width: 100%;
             padding: 14px;
-            background: #ff4081;
+            background: linear-gradient(135deg, #ff4081, #f50057);
             color: white;
             border: none;
             border-radius: 30px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
             transition: 0.3s;
         }
-        .envelope button:hover {
-            background: #f50057;
+        .envelope-card button:hover {
+            transform: scale(1.02);
         }
         .error-msg {
             color: #ff5252;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 12px;
             display: none;
         }
 
-        /* المحتوى الرئيسي (دارك مود) */
+        /* المحتوى الرئيسي */
         #main-content {
             display: none;
             padding: 20px;
             max-width: 600px;
             margin: 0 auto;
         }
-        .sub-title {
-            font-size: 15px;
-            color: #bbb;
-            margin-top: 15px;
-            font-weight: 600;
-        }
         .header-title {
             font-size: 24px;
             color: #ff4081;
-            margin: 5px 0 20px 0;
+            margin: 5px 0 15px 0;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
-        /* العداد التنازلي */
+        /* العداد التنازلي والنصوص حوله */
+        .countdown-label-top {
+            font-size: 15px;
+            color: #ccc;
+            margin-top: 15px;
+            font-weight: 600;
+        }
         .countdown-container {
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 25px;
+            margin: 10px 0;
         }
         .time-box {
             background: #1e1e1e;
@@ -162,6 +167,16 @@
             font-size: 11px;
             color: #aaa;
         }
+        .countdown-label-bottom {
+            font-size: 15px;
+            color: #ff4081;
+            font-weight: bold;
+            margin: 10px 0 20px 0;
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px dashed #ff4081;
+        }
 
         /* مشغل الأغاني الدوار الأنيق */
         .music-player {
@@ -172,7 +187,7 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            margin: 20px 0 25px 0;
+            margin: 15px 0 30px 0;
             border: 1px solid #333;
         }
         .album-art {
@@ -201,48 +216,32 @@
             justify-content: center;
         }
 
-        /* بطاقات النصوص والخواطر */
-        .quote-card {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            line-height: 1.8;
-            font-size: 14px;
-            color: #e0e0e0;
-            margin-bottom: 20px;
-            text-align: right;
-            border-right: 4px solid #ff4081;
-            border-top: 1px solid #333;
-            border-left: 1px solid #333;
-            border-bottom: 1px solid #333;
-        }
-
-        /* صور الذكريات */
+        /* صور الذكريات والتواريخ تحتها مباشرة */
         .images-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 30px;
         }
         .img-card {
             background: #1e1e1e;
             padding: 12px;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             border: 1px solid #333;
         }
         .img-card img {
             width: 100%;
             border-radius: 10px;
-            max-height: 450px;
+            max-height: 480px;
             object-fit: cover;
         }
         .img-date {
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 12px;
+            font-size: 15px;
             font-weight: bold;
             color: #ff4081;
+            letter-spacing: 0.5px;
         }
 
         /* قسم الواتساب والتواصل */
@@ -276,12 +275,13 @@
 </head>
 <body>
 
-    <!-- واجهة الظرف الداكنة -->
+    <!-- واجهة الظرف الفخمة -->
     <div id="login-screen">
-        <div class="envelope">
-            <h2 onclick="revealPass()">دووسي هنا يا نوران ♥</h2>
+        <div class="envelope-card">
+            <div class="envelope-icon">✉️</div>
+            <h2 onclick="revealPass()">دوسي هنا يا نوران ♥</h2>
             <div class="pass-container" id="passContainer">
-                <input type="password" id="pass-input" placeholder="اكتبي كلمة السر يا نوران">
+                <input type="password" id="pass-input" placeholder="اكتبي كلمة السر (Nona)">
                 <button onclick="checkPassword()">دوسي هنا ياابت 😂</button>
                 <div id="error-msg" class="error-msg">كلمة السر خطأ، جربي تاني!</div>
             </div>
@@ -290,8 +290,10 @@
 
     <!-- المحتوى الرئيسي -->
     <div id="main-content">
-        <div class="sub-title">باااقي لغيد ميلادي</div>
         <div class="header-title">جمــــيـــله ســــبـــتـــمـــبـــر ♥🎀</div>
+
+        <!-- جملة باقي فوق العداد مباشرة -->
+        <div class="countdown-label-top">باااقي لغيد ميلادي</div>
 
         <div class="countdown-container">
             <div class="time-box"><span id="days">00</span><label>يوم</label></div>
@@ -299,6 +301,9 @@
             <div class="time-box"><span id="minutes">00</span><label>دقيقة</label></div>
             <div class="time-box"><span id="seconds">00</span><label>ثانية</label></div>
         </div>
+
+        <!-- جملة الاحتفال تحت العداد -->
+        <div class="countdown-label-bottom">احتفاال بعيد ميلادي الجااي 🥳✨</div>
 
         <!-- مشغل الأغنية الدوار الأنيق -->
         <div class="music-player">
@@ -308,43 +313,31 @@
         </div>
         <audio id="bgMusic" src="ssstik.io_1790955861239.mp3" preload="auto" loop></audio>
 
-        <!-- الصور والخواطر والتواريخ -->
+        <!-- الصور والتواريخ تحتها مباشرة (بدون كلام قديم) -->
         <div class="images-section">
             <div class="img-card">
                 <img src="IMG-20261004-WA0016.jpg" alt="صورة 1">
                 <div class="img-date">📆 1/9/2009 🎀</div>
             </div>
             
-            <div class="quote-card">
-                اﻟلهـــم إني صبرت ڪما أمرتني فبشرني ڪما ﯠعدتني ،🕊
-            </div>
-
             <div class="img-card">
                 <img src="IMG-20261003-WA0019.jpg" alt="صورة 2">
-            </div>
-            <div class="quote-card">
-                اللهم إني وكلتك أمري فأنت لي خير وكيل ودبر لي أمري فإنني لا أحسن التدبير🌧️
+                <div class="img-date">📆 1/9/2027 🤍</div>
             </div>
 
             <div class="img-card">
                 <img src="IMG-20261004-WA0014.jpg" alt="صورة 3">
-            </div>
-            <div class="quote-card">
-                #اللهم كرهني في معصيتك وحببني في طاعتك:)''🍂🦋
+                <div class="img-date">📆 1/9/2027 ✨</div>
             </div>
 
             <div class="img-card">
                 <img src="IMG-20261004-WA0015.jpg" alt="صورة 4">
-            </div>
-            <div class="quote-card">
-                كل ما يقدره الله لك هو خير، حتى وإن لم تدرك الحكمة منه فوراً؛ فالتأخير في العطاء هو عين الحكمة
+                <div class="img-date">📆 1/9/2027 🌹</div>
             </div>
 
             <div class="img-card">
                 <img src="IMG-20261004-WA0013.jpg" alt="صورة 5">
-            </div>
-            <div class="quote-card">
-                كُن على يقين أن هناك شيئاً ينتظرك بعد الصبر، ليبهرك وينسيك مرارة الألم، ذلك وعد ربي:
+                <div class="img-date">📆 1/9/2027 🌟</div>
             </div>
         </div>
 
@@ -363,13 +356,12 @@
             document.getElementById('passContainer').style.display = 'block';
         }
 
-        // التحقق من كلمة السر (يمكنك تغيير الباسورد هنا حسب ما تحب)
+        // التحقق من كلمة السر Nona
         function checkPassword() {
             const pass = document.getElementById('pass-input').value.trim();
             const errorMsg = document.getElementById('error-msg');
             
-            // افتراضياً كلمة السر 2008 أو غيرها حسب رغبتك
-            if(pass === "2008" || pass === "2009" || pass !== "") {
+            if(pass.toLowerCase() === "nona") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 
@@ -420,7 +412,7 @@
         }
         setInterval(updateCountdown, 1000);
 
-        // تساقط القلوب في الدارك مود
+        // تساقط القلوب في الخلفية
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-fall');
